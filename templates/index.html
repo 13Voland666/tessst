@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+          <meta charset="UTF-8" />
+          <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1.0" />
+          <title>Transactions</title>
+          <style>
+               /* Стили для модальных окон */
+               .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0, 0, 0, 0.4);
+               }
+
+               .modal-content {
+                    background-color: #fefefe;
+                    margin: 15% auto;
+                    padding: 20px;
+                    border: 1px solid #888;
+                    width: 80%;
+                    max-width: 400px;
+               }
+
+               .close {
+                    color: #aaa;
+                    float: right;
+                    font-size: 28px;
+                    font-weight: bold;
+               }
+
+               .close:hover,
+               .close:focus {
+                    color: black;
+                    text-decoration: none;
+                    cursor: pointer;
+               }
+          </style>
+     </head>
+     <body>
+          <h1>Transactions</h1>
+          <table border="1">
+               <tr>
+                    <th>ID</th>
+                    <th>Info</th>
+                    <th>Amount</th>
+               </tr>
+               {% for transaction in transactions %}
+               <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.info }}</td>
+                    <td>{{ transaction.amount }}</td>
+               </tr>
+               {% endfor %}
+          </table>
+          <p>Total Amount: {{ total_amount }}</p>
+          <button onclick="openModal('deposit')">Deposit</button>
+          <button onclick="openModal('expense')">Expense</button>
+
+          <!-- Модальное окно для пополнения -->
+          <div id="modal-deposit" class="modal">
+               <div class="modal-content">
+                    <span class="close" onclick="closeModal('deposit')"
+                         >&times;</span
+                    >
+                    <form
+                         id="deposit-form"
+                         method="POST"
+                         action="/add_transaction">
+                         <label for="info">Information:</label><br />
+                         <input
+                              type="text"
+                              id="info-deposit"
+                              name="info" /><br />
+                         <label for="amount">Amount:</label><br />
+                         <input
+                              type="number"
+                              id="amount-deposit"
+                              name="amount" /><br /><br />
+                         <input
+                              type="submit"
+                              value="Submit"
+                              onclick="closeModal('deposit')" />
+                    </form>
+               </div>
+          </div>
+
+          <!-- Модальное окно для затрат -->
+          <div id="modal-expense" class="modal">
+               <div class="modal-content">
+                    <span class="close" onclick="closeModal('expense')"
+                         >&times;</span
+                    >
+                    <form
+                         id="expense-form"
+                         method="POST"
+                         action="/add_transaction1">
+                         <label for="info">Information:</label><br />
+                         <input
+                              type="text"
+                              id="info-expense"
+                              name="info" /><br />
+                         <label for="amount">Amount:</label><br />
+                         <input
+                              type="number"
+                              id="amount-expense"
+                              name="amount" /><br /><br />
+                         <input
+                              type="submit"
+                              value="Submit"
+                              onclick="closeModal('expense')" />
+                    </form>
+               </div>
+          </div>
+
+          <!-- JavaScript код -->
+          <script>
+               // Функция для открытия модального окна
+               function openModal(type) {
+                    document.getElementById("modal-" + type).style.display =
+                         "block";
+               }
+
+               // Функция для закрытия модального окна
+               function closeModal(type) {
+                    document.getElementById("modal-" + type).style.display =
+                         "none";
+               }
+
+               // Закрытие модального окна при клике вне его области
+               window.onclick = function (event) {
+                    if (event.target.className === "modal") {
+                         event.target.style.display = "none";
+                    }
+               };
+          </script>
+     </body>
+</html>
